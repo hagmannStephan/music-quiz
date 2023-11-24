@@ -21,4 +21,12 @@ public class Question {
     public void setValues(ArrayList<QuestionValue> values) {
         this.values = values;
     }
+
+    @Override
+    public String toString() {
+        return "Question{" +
+                "question='" + question + '\'' +
+                ", values=" + values +
+                '}';
+    }
 }

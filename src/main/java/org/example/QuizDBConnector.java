@@ -59,8 +59,12 @@ public class QuizDBConnector {
         EntryClass randomEntry = entryList.get(randomIndex);
         Question question = new Question();
         question.setQuestion(randomEntry.getQuestion());
-        ArrayList<QuestionValue> answers = new ArrayList<>();
-        answers.add(new QuestionValue(randomEntry.getDescription(), true));
-
+        ArrayList<QuestionValue> values = new ArrayList<>();
+        values.add(new QuestionValue(randomEntry.getDescription(), true));
+        values.add(new QuestionValue(1, false));
+        values.add(new QuestionValue(1, false));
+        values.add(new QuestionValue(1, false));
+        question.setValues(values);
+        return question;
     }
 }

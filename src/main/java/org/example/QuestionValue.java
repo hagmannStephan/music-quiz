@@ -24,4 +24,12 @@ public class QuestionValue {
         this.description = description;
         this.isTrue = isTrue;
     }
+
+    @Override
+    public String toString() {
+        return "QuestionValue{" +
+                "description=" + description +
+                ", isTrue=" + isTrue +
+                '}';
+    }
 }
