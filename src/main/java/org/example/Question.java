@@ -1,50 +1,24 @@
 package org.example;
 
+import java.util.ArrayList;
+
 public class Question {
-    private String name;
-    private int releaseYear;
-    private int soldUnits;
-    private int length;
+    private String question;
+    private ArrayList<QuestionValue> values;
 
-    public String getName() {
-        return name;
+    public String getQuestion() {
+        return question;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setQuestion(String question) {
+        this.question = question;
     }
 
-    public int getReleaseYear() {
-        return releaseYear;
+    public ArrayList<QuestionValue> getValues() {
+        return values;
     }
 
-    public void setReleaseYear(int releaseYear) {
-        this.releaseYear = releaseYear;
-    }
-
-    public int getSoldUnits() {
-        return soldUnits;
-    }
-
-    public void setSoldUnits(int soldUnits) {
-        this.soldUnits = soldUnits;
-    }
-
-    public int getLength() {
-        return length;
-    }
-
-    public void setLength(int length) {
-        this.length = length;
-    }
-
-    @Override
-    public String toString() {
-        return "Question{" +
-                "name='" + name + '\'' +
-                ", releaseYear=" + releaseYear +
-                ", soldUnits=" + soldUnits +
-                ", length=" + length +
-                '}';
+    public void setValues(ArrayList<QuestionValue> values) {
+        this.values = values;
     }
 }
