@@ -19,4 +19,12 @@ public class EntryClass {
     public void setDescription(Integer description) {
         this.description = description;
     }
+
+    @Override
+    public String toString() {
+        return "EntryClass{" +
+                "question='" + question + '\'' +
+                ", description=" + description +
+                '}';
+    }
 }

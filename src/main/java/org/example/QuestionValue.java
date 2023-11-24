@@ -19,4 +19,9 @@ public class QuestionValue {
     public void setTrue(Boolean aTrue) {
         isTrue = aTrue;
     }
+
+    public QuestionValue(Integer description, Boolean isTrue) {
+        this.description = description;
+        this.isTrue = isTrue;
+    }
 }

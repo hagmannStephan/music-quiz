@@ -14,6 +14,7 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Random;
 
 
 public class QuizDBConnector {
@@ -45,5 +46,21 @@ public class QuizDBConnector {
             }
         }
         return value_db;
+    }
+
+    public static Question getRandomEntry() {
+        ArrayList<EntryClass> entryList = getDatabase();
+        if (entryList == null || entryList.isEmpty()) {
+            return null; // Return null for an empty list
+        }
+
+        Random random = new Random();
+        int randomIndex = random.nextInt(entryList.size());
+        EntryClass randomEntry = entryList.get(randomIndex);
+        Question question = new Question();
+        question.setQuestion(randomEntry.getQuestion());
+        ArrayList<QuestionValue> answers = new ArrayList<>();
+        answers.add(new QuestionValue(randomEntry.getDescription(), true));
+
     }
 }
