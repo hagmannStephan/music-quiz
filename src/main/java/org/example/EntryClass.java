@@ -1,30 +1,60 @@
 package org.example;
 
 public class EntryClass {
-    private String question;
-    private Integer description;
+    private String name;
+    private int maxStreams;
+    private int release;
+    private int length;
+    private int titles;
 
-    public String getQuestion() {
-        return question;
+    public String getName() {
+        return name;
     }
 
-    public void setQuestion(String question) {
-        this.question = question;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public Integer getDescription() {
-        return description;
+    public int getMaxStreams() {
+        return maxStreams;
     }
 
-    public void setDescription(Integer description) {
-        this.description = description;
+    public void setMaxStreams(int maxStreams) {
+        this.maxStreams = maxStreams;
+    }
+
+    public int getRelease() {
+        return release;
+    }
+
+    public void setRelease(int release) {
+        this.release = release;
+    }
+
+    public int getLength() {
+        return length;
+    }
+
+    public void setLength(int length) {
+        this.length = length;
+    }
+
+    public int getTitles() {
+        return titles;
+    }
+
+    public void setTitles(int titles) {
+        this.titles = titles;
     }
 
     @Override
     public String toString() {
         return "EntryClass{" +
-                "question='" + question + '\'' +
-                ", description=" + description +
+                "name='" + name + '\'' +
+                ", maxStreams=" + maxStreams +
+                ", release=" + release +
+                ", length=" + length +
+                ", titles=" + titles +
                 '}';
     }
 }
