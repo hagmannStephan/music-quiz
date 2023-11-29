@@ -2,17 +2,17 @@ package org.example;
 
 public class Statistic {
 
-    private String identifier; // Date + Username
-    private int points;
+    private int points = 0;
     private int duration;
     private String user;
+    private String category;
 
-    public String getIdentifier() {
-        return identifier;
+    public String getCategory() {
+        return category;
     }
 
-    public void setIdentifier(String identifier) {
-        this.identifier = identifier;
+    public void setCategory(String category) {
+        this.category = category;
     }
 
     public int getPoints() {
@@ -42,10 +42,10 @@ public class Statistic {
     @Override
     public String toString() {
         return "Statistic{" +
-                "identifier='" + identifier + '\'' +
-                ", points=" + points +
+                "points=" + points +
                 ", duration=" + duration +
                 ", user='" + user + '\'' +
+                ", category='" + category + '\'' +
                 '}';
     }
 }

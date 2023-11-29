@@ -57,7 +57,7 @@ public class QuizDBConnector {
         Question question = new Question();
         ArrayList<QuestionValue> values = new ArrayList<>();
         switch (category) {
-            case "maxStreams" -> {
+            case "Streams" -> {
                 question.setQuestion("How many streams does the most streamed song on " + randomEntry.getName() + " have (in Millions)?");
                 values.add(new QuestionValue(randomEntry.getMaxStreams(), true));
                 while (values.size() < 3) {
@@ -69,7 +69,7 @@ public class QuizDBConnector {
                     }
                 }
             }
-            case "release" -> {
+            case "Release" -> {
                 question.setQuestion("In which year got the album " + randomEntry.getName() + " released?");
                 values.add(new QuestionValue(randomEntry.getRelease(), true));
                 while (values.size() < 3) {
@@ -81,7 +81,7 @@ public class QuizDBConnector {
                     }
                 }
             }
-            case "length" -> {
+            case "Length" -> {
                 question.setQuestion("How long is the album " + randomEntry.getName() + " from start to end (in Minutes)?");
                 values.add(new QuestionValue(randomEntry.getLength(), true));
                 while (values.size() < 3) {
@@ -93,7 +93,7 @@ public class QuizDBConnector {
                     }
                 }
             }
-            case "titles" -> {
+            case "Titles" -> {
                 question.setQuestion("How many titles are on the album " + randomEntry.getName() + "?");
                 values.add(new QuestionValue(randomEntry.getTitles(), true));
                 while (values.size() < 3) {
