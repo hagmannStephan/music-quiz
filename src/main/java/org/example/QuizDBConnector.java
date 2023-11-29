@@ -13,38 +13,41 @@ public class QuizDBConnector {
     private static final String CONNECTION_STRING = "mongodb://root:root@localhost/";
     private static final String DATABASE_NAME = "Quiz";
     private static final String COLLECTION_NAME = "Questions";
-
     private static ArrayList<EntryClass> value_db;
 
-    public static ArrayList<EntryClass> getDatabase () {
+    public static ArrayList<EntryClass> getDatabaseByCategory(String category) {
+        ArrayList<EntryClass> value_db = new ArrayList<>();
         try (MongoClient mongoClient = MongoClients.create(
                 MongoClientSettings.builder().applyConnectionString(new ConnectionString(CONNECTION_STRING)).build()
         )) {
             MongoDatabase database = mongoClient.getDatabase(DATABASE_NAME);
-            try {
-                value_db = new ArrayList<EntryClass>();
-                MongoCollection<Document> carDocs = database.getCollection(COLLECTION_NAME);
-                FindIterable<Document> iterDoc = carDocs.find();
-                Iterator<Document> it = iterDoc.iterator();
-                while(it.hasNext()){
-                    Document doc = it.next();
-                    EntryClass e = new EntryClass();
-                    e.setName(doc.getString("name"));
-                    e.setMaxStreams(doc.getInteger("maxStreams"));
-                    e.setRelease(doc.getInteger("release"));
-                    e.setLength(doc.getInteger("length"));
-                    e.setTitles(doc.getInteger("titles"));
-                    value_db.add(e);
-                }
-            } catch (MongoException me) {
-                System.err.println("An error occurred while attempting to run a command: " + me);
+            MongoCollection<Document> statDocs = database.getCollection(COLLECTION_NAME);
+
+            List<Document> aggregationPipeline = Arrays.asList(
+                    new Document("$match",
+                    new Document(category,
+                    new Document("$exists", true)))
+            );
+
+            AggregateIterable<Document> results = statDocs.aggregate(aggregationPipeline);
+            for (Document result : results) {
+                EntryClass e = new EntryClass();
+                e.setName(result.getString("name"));
+                e.setMaxStreams(result.getInteger("maxStreams"));
+                e.setRelease(result.getInteger("release"));
+                e.setLength(result.getInteger("length"));
+                e.setTitles(result.getInteger("titles"));
+                value_db.add(e);
             }
+
+        } catch (MongoException me) {
+            System.err.println("An error occurred while attempting to get top three statistics: " + me);
         }
         return value_db;
     }
 
     public static Question getRandomEntry(String category) {
-        ArrayList<EntryClass> entryList = getDatabase();
+        ArrayList<EntryClass> entryList = getDatabaseByCategory(category);
         if (entryList == null || entryList.isEmpty()) {
             return null;
         }
@@ -56,7 +59,7 @@ public class QuizDBConnector {
         Question question = new Question();
         ArrayList<QuestionValue> values = new ArrayList<>();
         switch (category) {
-            case "Streams" -> {
+            case "maxStreams" -> {
                 question.setQuestion("How many streams does the most streamed song on " + randomEntry.getName() + " have (in Millions)?");
                 values.add(new QuestionValue(randomEntry.getMaxStreams(), true));
                 while (values.size() < 3) {
@@ -68,7 +71,7 @@ public class QuizDBConnector {
                     }
                 }
             }
-            case "Release" -> {
+            case "release" -> {
                 question.setQuestion("In which year got the album " + randomEntry.getName() + " released?");
                 values.add(new QuestionValue(randomEntry.getRelease(), true));
                 while (values.size() < 3) {
@@ -80,7 +83,7 @@ public class QuizDBConnector {
                     }
                 }
             }
-            case "Length" -> {
+            case "length" -> {
                 question.setQuestion("How long is the album " + randomEntry.getName() + " from start to end (in Minutes)?");
                 values.add(new QuestionValue(randomEntry.getLength(), true));
                 while (values.size() < 3) {
@@ -92,7 +95,7 @@ public class QuizDBConnector {
                     }
                 }
             }
-            case "Titles" -> {
+            case "titles" -> {
                 question.setQuestion("How many titles are on the album " + randomEntry.getName() + "?");
                 values.add(new QuestionValue(randomEntry.getTitles(), true));
                 while (values.size() < 3) {

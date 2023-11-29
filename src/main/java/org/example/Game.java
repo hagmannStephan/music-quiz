@@ -20,15 +20,15 @@ public class Game {
         stat.setUser(name);
 
         System.out.println("Hello " + name);
-        System.out.println("Which of the following categories do you want to be questioned about: Streams, Release, Length or Titles");
+        System.out.println("Which of the following categories do you want to be questioned about: maxStreams, release, length or titles");
 
         String category = scanner.next();
 
         switch (category) {
-            case "Streams" -> System.out.println("You will have to guess which of the numbers (in millions) seems most likely to by the number of streams on the most streamed song of the album");
-            case "Release" -> System.out.println("You will have to guess which year the album was released");
-            case "Length" -> System.out.println("You will have to guess how long the album is (in minutes)");
-            case "Titles" -> System.out.println("You will have to guess how many titles there are on the album");
+            case "maxStreams" -> System.out.println("You will have to guess which of the numbers (in millions) seems most likely to by the number of streams on the most streamed song of the album");
+            case "release" -> System.out.println("You will have to guess which year the album was released");
+            case "length" -> System.out.println("You will have to guess how long the album is (in minutes)");
+            case "titles" -> System.out.println("You will have to guess how many titles there are on the album");
             default -> {
                 System.out.println("Please enter a valid category next time");
                 System.exit(0);
@@ -61,7 +61,7 @@ public class Game {
                     values.remove(question);
                 }
 
-                System.out.println("What do you think it the right answer (Type the number): ");
+                System.out.println("What do you think it the right answer (Type the value you believe is true): ");
                 int response = scanner.nextInt();
                 boolean isCorrect = false;
                 for (QuestionValue v : current.getValues()) {
