@@ -5,9 +5,8 @@ import com.mongodb.MongoClientSettings;
 import com.mongodb.MongoException;
 import com.mongodb.client.*;
 import org.bson.Document;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Random;
+
+import java.util.*;
 
 
 public class QuizDBConnector {
@@ -112,5 +111,54 @@ public class QuizDBConnector {
 
         question.setValues(values);
         return question;
+    }
+
+    public static void addStatistic(Statistic statistic) {
+        try (MongoClient mongoClient = MongoClients.create(
+                MongoClientSettings.builder().applyConnectionString(new ConnectionString(CONNECTION_STRING)).build()
+        )) {
+            MongoDatabase database = mongoClient.getDatabase(DATABASE_NAME);
+            MongoCollection<Document> statDocs = database.getCollection("Statistic");
+
+            Document statDoc = new Document()
+                    .append("points", statistic.getPoints())
+                    .append("duration", statistic.getDuration())
+                    .append("user", statistic.getUser())
+                    .append("category", statistic.getCategory());
+            statDocs.insertOne(statDoc);
+        } catch (MongoException me) {
+            System.err.println("An error occurred while attempting to add a statistic entry: " + me);
+        }
+    }
+
+    public static ArrayList<Statistic> getTopThree() {
+        ArrayList<Statistic> topThree = new ArrayList<>();
+
+        try (MongoClient mongoClient = MongoClients.create(
+                MongoClientSettings.builder().applyConnectionString(new ConnectionString(CONNECTION_STRING)).build()
+        )) {
+            MongoDatabase database = mongoClient.getDatabase(DATABASE_NAME);
+            MongoCollection<Document> statDocs = database.getCollection("Statistic");
+
+            List<Document> aggregationPipeline = Arrays.asList(
+                    new Document("$sort", new Document("points", -1L).append("duration", 1L)),
+                    new Document("$limit", 3L)
+            );
+
+            AggregateIterable<Document> results = statDocs.aggregate(aggregationPipeline);
+            for (Document result : results) {
+                Statistic statistic = new Statistic();
+                statistic.setPoints(result.getInteger("points"));
+                statistic.setDuration(result.getInteger("duration"));
+                statistic.setUser(result.getString("user"));
+                statistic.setCategory(result.getString("category"));
+                topThree.add(statistic);
+            }
+
+        } catch (MongoException me) {
+            System.err.println("An error occurred while attempting to get top three statistics: " + me);
+        }
+
+        return topThree;
     }
 }

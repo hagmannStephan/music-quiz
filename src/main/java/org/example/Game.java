@@ -41,7 +41,6 @@ public class Game {
         ArrayList<Question> finishedQuestions = new ArrayList<>();
 
         while (finishedQuestions.size() <= 5) {
-            System.out.println();
             Question current = QuizDBConnector.getRandomEntry(category);
             Boolean alreadyAsked = false;
             for (Question q : finishedQuestions){
@@ -51,6 +50,7 @@ public class Game {
                 }
             }
             if (!alreadyAsked) {
+                System.out.println();
                 System.out.println("Album name: " + current.getQuestion());
                 ArrayList<QuestionValue> values = new ArrayList<>(current.getValues());
                 int originalSize = values.size();
@@ -80,7 +80,17 @@ public class Game {
             }
         }
         long endTime = System.currentTimeMillis();
-        System.out.println("You finished the quiz in: ");
-        System.out.println(endTime - startTime);
+        stat.setDuration((int) ((endTime - startTime) / 1000));
+        System.out.println("You managed to get " +  String.valueOf(stat.getPoints()) + " Points in " + String.valueOf(stat.getDuration() + " Seconds!"));
+        QuizDBConnector.addStatistic(stat);
+
+        System.out.println();
+        System.out.println("------------------------------------");
+        System.out.println("The current high-scores are:");
+        ArrayList<Statistic> statistics = QuizDBConnector.getTopThree();
+        for (Statistic s : statistics) {
+            int place = statistics.indexOf(s) + 1;
+            System.out.println(String.valueOf(place) + ") " + s.getUser() + " in " + String.valueOf(s.getDuration()) + " seconds with " + String.valueOf(s.getPoints()) + " points");
+        }
     }
 }
