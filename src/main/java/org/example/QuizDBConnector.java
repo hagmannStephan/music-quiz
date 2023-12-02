@@ -13,7 +13,6 @@ public class QuizDBConnector {
     private static final String CONNECTION_STRING = "mongodb://root:root@localhost/";
     private static final String DATABASE_NAME = "Quiz";
     private static final String COLLECTION_NAME = "Questions";
-    private static ArrayList<EntryClass> value_db;
 
     public static ArrayList<EntryClass> getDatabaseByCategory(String category) {
         ArrayList<EntryClass> value_db = new ArrayList<>();

@@ -1,6 +1,5 @@
 package org.example;
 
-import javax.sound.midi.Soundbank;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
@@ -12,36 +11,43 @@ public class Game {
         Scanner scanner = new Scanner(System.in);
         Random random = new Random();
 
+        System.out.println();
         System.out.println("Welcome to music-quiz!");
         System.out.println("------------------------------------");
-        System.out.print("What is your name: ");
+        System.out.print("Please enter your name: ");
 
         String name = scanner.next();
         stat.setUser(name);
 
+        System.out.println();
         System.out.println("Hello " + name);
-        System.out.println("Which of the following categories do you want to be questioned about: maxStreams, release, length or titles");
 
-        String category = scanner.next();
+        boolean responded = false;
 
-        switch (category) {
-            case "maxStreams" -> System.out.println("You will have to guess which of the numbers (in millions) seems most likely to by the number of streams on the most streamed song of the album");
-            case "release" -> System.out.println("You will have to guess which year the album was released");
-            case "length" -> System.out.println("You will have to guess how long the album is (in minutes)");
-            case "titles" -> System.out.println("You will have to guess how many titles there are on the album");
-            default -> {
-                System.out.println("Please enter a valid category next time");
-                System.exit(0);
+        while (!responded){
+            responded = true;
+            System.out.println("Which of the following categories do you want to be questioned about: maxStreams, release, length or titles?");
+            String category = scanner.next();
+            System.out.println();
+
+            switch (category) {
+                case "maxStreams" -> System.out.println("Great choice, your task is to guess: How many copies of the album got sold (in mil)?");
+                case "release" -> System.out.println("Great choice, your task is to guess: In which year was the album released?");
+                case "length" -> System.out.println("Great choice, your task is to guess: How long does it take to play the album (in min)?");
+                case "titles" -> System.out.println("Great choice, your task is to guess: How many tracks are on the album?");
+                default -> {
+                    System.out.println("Please enter a valid category next time");
+                    responded = false;
+                }
             }
+            stat.setCategory(category);
         }
-
-        stat.setCategory(category);
 
         long startTime = System.currentTimeMillis();
         ArrayList<Question> finishedQuestions = new ArrayList<>();
 
         while (finishedQuestions.size() <= 5) {
-            Question current = QuizDBConnector.getRandomEntry(category);
+            Question current = QuizDBConnector.getRandomEntry(stat.getCategory());
             Boolean alreadyAsked = false;
             for (Question q : finishedQuestions){
                 if (q.getQuestion().equals(current.getQuestion())){
@@ -51,7 +57,7 @@ public class Game {
             }
             if (!alreadyAsked) {
                 System.out.println();
-                System.out.println("Album name: " + current.getQuestion());
+                System.out.println(current.getQuestion());
                 ArrayList<QuestionValue> values = new ArrayList<>(current.getValues());
                 int originalSize = values.size();
 
@@ -61,7 +67,7 @@ public class Game {
                     values.remove(question);
                 }
 
-                System.out.println("What do you think it the right answer (Type the value you believe is true): ");
+                System.out.println("What do you think it the right answer (Enter the value you believe to be true): ");
                 int response = scanner.nextInt();
                 boolean isCorrect = false;
                 for (QuestionValue v : current.getValues()) {
